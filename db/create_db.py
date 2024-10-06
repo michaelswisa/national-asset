@@ -1,9 +1,8 @@
 import psycopg2
 from psycopg2 import sql
-from dotenv import load_dotenv
-import os
+from config.config import load_config  # Importing the load_config function
 
-# יצירת סוגי ENUM ב-PostgreSQL
+# Create ENUM types in PostgreSQL
 create_role_enum = """
 CREATE TYPE user_role AS ENUM ('soldier', 'commander', 'manager');
 """
@@ -12,7 +11,7 @@ create_task_status_enum = """
 CREATE TYPE task_status AS ENUM ('pending', 'in_progress', 'completed', 'cancelled');
 """
 
-# טבלת Users
+# Users table
 create_users_table = """
 CREATE TABLE Users (
     user_id SERIAL PRIMARY KEY,
@@ -25,7 +24,7 @@ CREATE TABLE Users (
 );
 """
 
-# טבלת Units
+# Units table
 create_units_table = """
 CREATE TABLE Units (
     unit_id SERIAL PRIMARY KEY,
@@ -34,7 +33,7 @@ CREATE TABLE Units (
 );
 """
 
-# טבלת Soldiers
+# Soldiers table
 create_soldiers_table = """
 CREATE TABLE Soldiers (
     soldier_id SERIAL PRIMARY KEY,
@@ -49,7 +48,7 @@ CREATE TABLE Soldiers (
 );
 """
 
-# טבלת Commanders
+# Commanders table
 create_commanders_table = """
 CREATE TABLE Commanders (
     commander_id SERIAL PRIMARY KEY,
@@ -58,7 +57,7 @@ CREATE TABLE Commanders (
 );
 """
 
-# טבלת Tasks
+# Tasks table
 create_tasks_table = """
 CREATE TABLE Tasks (
     task_id SERIAL PRIMARY KEY,
@@ -71,7 +70,7 @@ CREATE TABLE Tasks (
 );
 """
 
-# טבלת Task_Assignments
+# Task Assignments table
 create_task_assignments_table = """
 CREATE TABLE Task_Assignments (
     assignment_id SERIAL PRIMARY KEY,
@@ -82,7 +81,7 @@ CREATE TABLE Task_Assignments (
 );
 """
 
-# טבלת Locations
+# Locations table
 create_locations_table = """
 CREATE TABLE Locations (
     location_id SERIAL PRIMARY KEY,
@@ -94,7 +93,7 @@ CREATE TABLE Locations (
 );
 """
 
-#טבלת Addresses
+# Addresses table
 create_addresses_table = """
 CREATE TABLE Addresses (
     address_id SERIAL PRIMARY KEY,
@@ -106,63 +105,54 @@ CREATE TABLE Addresses (
 );
 """
 
-# טוענים את משתני הסביבה מקובץ .env
-load_dotenv(dotenv_path='../config/.env')
+# Load configuration values from the .env file
+config = load_config()
 
-# מקבלים את ערכי החיבור ממערכת הסביבה
-DB_NAME = os.getenv('DB_NAME')
-DB_USER = os.getenv('DB_USER')
-DB_PASSWORD = os.getenv('DB_PASSWORD')
-DB_HOST = os.getenv('DB_HOST')
-DB_PORT = os.getenv('DB_PORT')
-
-# מסד נתונים ברירת מחדל (למשל postgres) ליצירת מסד חדש
+# Default database (for example, postgres) to create a new database
 DEFAULT_DB = "postgres"
 
-
-# חיבור למסד ברירת מחדל כדי ליצור את מסד הנתונים אם הוא לא קיים
+# Function to connect to the default database and create a new database if it doesn't exist
 def create_database():
     try:
         conn = psycopg2.connect(
             dbname=DEFAULT_DB,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            host=DB_HOST,
-            port=DB_PORT
+            user=config['DB_USER'],
+            password=config['DB_PASSWORD'],
+            host=config['DB_HOST'],
+            port=config['DB_PORT']
         )
         conn.autocommit = True
         cursor = conn.cursor()
 
-        # בדיקה אם מסד הנתונים קיים
-        cursor.execute(f"SELECT 1 FROM pg_database WHERE datname='{DB_NAME}'")
+        # Check if the database exists
+        cursor.execute(f"SELECT 1 FROM pg_database WHERE datname='{config['DB_NAME']}'")
         exists = cursor.fetchone()
 
-        # יצירת מסד הנתונים אם הוא לא קיים
+        # Create the database if it doesn't exist
         if not exists:
-            cursor.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(DB_NAME)))
-            print(f"Database '{DB_NAME}' created successfully.")
+            cursor.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(config['DB_NAME'])))
+            print(f"Database '{config['DB_NAME']}' created successfully.")
         else:
-            print(f"Database '{DB_NAME}' already exists.")
+            print(f"Database '{config['DB_NAME']}' already exists.")
 
         cursor.close()
         conn.close()
     except Exception as e:
         print(f"Error creating database: {e}")
 
-
-# פונקציה ליצירת טבלאות במסד הנתונים
+# Function to create tables in the database
 def create_tables():
     try:
         conn = psycopg2.connect(
-            dbname=DB_NAME,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            host=DB_HOST,
-            port=DB_PORT
+            dbname=config['DB_NAME'],
+            user=config['DB_USER'],
+            password=config['DB_PASSWORD'],
+            host=config['DB_HOST'],
+            port=config['DB_PORT']
         )
         cursor = conn.cursor()
 
-        # יצירת הטבלאות לפי השאילתות שסיפקת
+        # Create tables based on the provided queries
         queries = [
             create_role_enum,
             create_task_status_enum,
@@ -187,7 +177,39 @@ def create_tables():
     except Exception as e:
         print(f"Error creating tables: {e}")
 
+# Function to insert the initial user into the Users table
+def insert_initial_user():
+    try:
+        # Connect to the database
+        conn = psycopg2.connect(
+            dbname=config['DB_NAME'],
+            user=config['DB_USER'],
+            password=config['DB_PASSWORD'],
+            host=config['DB_HOST'],
+            port=config['DB_PORT']
+        )
+        cursor = conn.cursor()
 
+        # Prepare the query to insert the initial user
+        insert_query = """
+        INSERT INTO Users (username, password, email, role)
+        VALUES (%s, %s, %s, %s);
+        """
+        # Initial user details
+        initial_user_data = ("admin", "password123", "admin@example.com", "manager")
+
+        # Execute the insert query
+        cursor.execute(insert_query, initial_user_data)
+        conn.commit()
+        print("Initial user created successfully.")
+
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        print(f"Error inserting initial user: {e}")
+
+# Main execution
 if __name__ == '__main__':
-    create_database()  # יצירת מסד הנתונים אם הוא לא קיים
-    create_tables()  # יצירת כל הטבלאות במסד הנתונים
+    create_database()  # Create the database if it doesn't exist
+    create_tables()    # Create all tables in the database
+    insert_initial_user()  # Insert the initial user
