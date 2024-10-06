@@ -1,30 +1,20 @@
 import psycopg2
 from psycopg2 import pool
 from flask_sqlalchemy import SQLAlchemy
-from dotenv import load_dotenv
-import os
+from config.config import load_config
 
-# Load environment variables from .env file
-load_dotenv(dotenv_path='./config/.env')
-
-# Get database connection details from environment variables
-DB_NAME = os.getenv('DB_NAME')
-DB_USER = os.getenv('DB_USER')
-DB_PASSWORD = os.getenv('DB_PASSWORD')
-DB_HOST = os.getenv('DB_HOST')
-DB_PORT = os.getenv('DB_PORT')
-DB_MIN_CONNECT = os.getenv('DB_MIN_CONNECT')
-DB_MAX_CONNECT = os.getenv('DB_MAX_CONNECT')
+# טען את הקונפיגורציה
+config = load_config()
 
 # יצירת pool עם מינימום ומקסימום חיבורים
 connection_pool = psycopg2.pool.SimpleConnectionPool(
-    minconn=DB_MIN_CONNECT,   # מינימום חיבורים במאגר
-    maxconn=DB_MAX_CONNECT,   # מקסימום חיבורים במאגר
-    dbname=DB_NAME,
-    user=DB_USER,
-    password=DB_PASSWORD,
-    host=DB_HOST,
-    port=DB_PORT
+    minconn=config['DB_MIN_CONNECT'],   # מינימום חיבורים במאגר
+    maxconn=config['DB_MAX_CONNECT'],   # מקסימום חיבורים במאגר
+    dbname=config['DB_NAME'],
+    user=config['DB_USER'],
+    password=config['DB_PASSWORD'],
+    host=config['DB_HOST'],
+    port=config['DB_PORT']
 )
 
 def get_db_connection():
@@ -53,7 +43,5 @@ def close_all_connections():
         print("All pool connections closed.")
     except Exception as e:
         print(f"Error closing all pool connections: {e}")
-
-
 
 db = SQLAlchemy()
