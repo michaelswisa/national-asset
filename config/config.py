@@ -2,15 +2,17 @@ import os
 from dotenv import load_dotenv
 
 
-def load_config():
+def get_path_env():
     # Get the current file directory
     current_dir = os.path.dirname(__file__)
-
     # Construct the path to the .env file
     dotenv_path = os.path.join(current_dir, '..', 'config', '.env')
-
     # Load the .env file
     load_dotenv(dotenv_path=dotenv_path)
+
+
+def load_config():
+    get_path_env()
 
     # Get database connection details from environment variables
     config = {
@@ -25,3 +27,9 @@ def load_config():
     }
 
     return config
+
+
+def get_secret_key():
+    get_path_env()
+    # Get the secret key from environment variable
+    return os.getenv('SECRET_KEY')
