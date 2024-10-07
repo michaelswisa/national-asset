@@ -22,12 +22,16 @@ class User(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc),
                            nullable=False)
 
+    @property
+    def role_value(self):
+        return self.role.value
+
     def to_dict(self):
         return {
             'user_id': self.user_id,
             'username': self.username,
             'email': self.email,
-            'role': self.role.value,
+            'role': self.role_value,  # שימוש בגישה החדשה
             'created_at': self.created_at.isoformat(),
             'updated_at': self.updated_at.isoformat()
         }
