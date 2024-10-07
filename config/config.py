@@ -21,6 +21,7 @@ def load_config():
         'DB_PORT': os.getenv('DB_PORT'),
         'DB_MIN_CONNECT': os.getenv('DB_MIN_CONNECT'),
         'DB_MAX_CONNECT': os.getenv('DB_MAX_CONNECT'),
+        'POOL_TIMEOUT': os.getenv('POOL_TIMEOUT'),
     }
 
     return config

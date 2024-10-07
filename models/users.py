@@ -1,4 +1,4 @@
-from db.db import db
+from db.db import db_alchemy as db
 import enum
 from datetime import datetime, timezone
 

@@ -4,14 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1c88886-e7e6-4e2b-995e-f81b60597114" name="Changes" comment="Adding the services folder with the user service file&#10;Adding a route of creating a new user with the use of user_service&#10;Adjustment of the app file according to the code&#10;and other bug fixes">
-      <change afterPath="$PROJECT_DIR$/API_Documentation.md" afterDir="false" />
+    <list default="true" id="a1c88886-e7e6-4e2b-995e-f81b60597114" name="Changes" comment="Improve code and add function to automatically insert the initial user">
       <change afterPath="$PROJECT_DIR$/blueprints/bp_login.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blueprints/bp_users.py" beforeDir="false" afterPath="$PROJECT_DIR$/blueprints/bp_users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/create_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/db/create_db.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/db/db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/users_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/users_service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +71,7 @@
     "Python tests.Python tests for test_user.test_create_user_missing_fields.executor": "Run",
     "Python tests.Python tests for test_user.test_create_user_success.executor": "Run",
     "Python tests.Python tests in test_user.py.executor": "Run",
+    "Python.create_db.executor": "Run",
     "Python.national-asset.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
@@ -87,6 +90,29 @@
   }
 }]]></component>
   <component name="RunManager" selected="Flask server.Flask (app.py)">
+    <configuration name="create_db" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="national-asset" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/db" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/db/create_db.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="national-asset" type="PythonConfigurationType" factoryName="Python">
       <module name="national-asset" />
       <option name="ENV_FILES" value="" />
@@ -144,8 +170,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.Python tests in test_user.py" />
         <item itemvalue="Flask server.Flask (app.py)" />
+        <item itemvalue="Python.create_db" />
+        <item itemvalue="Python tests.Python tests in test_user.py" />
       </list>
     </recent_temporary>
   </component>
@@ -169,7 +196,7 @@
       <workItem from="1728213565455" duration="10000" />
       <workItem from="1728213583099" duration="277000" />
       <workItem from="1728216502799" duration="128000" />
-      <workItem from="1728216647966" duration="11646000" />
+      <workItem from="1728216647966" duration="23393000" />
     </task>
     <task id="LOCAL‎-00001" summary="Adding the services folder with the user service file&#10;Adding a route of creating a new user with the use of user_service&#10;Adjustment of the app file according to the code&#10;and other bug fixes">
       <option name="closed" value="true" />
@@ -179,7 +206,31 @@
       <option name="project" value="LOCAL‎" />
       <updated>1728240219351</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL‎-00002" summary="Refactored the database connection code into a separate file and added a test_user.py file with tests for creating a new user.">
+      <option name="closed" value="true" />
+      <created>1728243132395</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL‎-00002" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1728243132395</updated>
+    </task>
+    <task id="LOCAL‎-00003" summary="Added routes for user-related functionality in the application.">
+      <option name="closed" value="true" />
+      <created>1728243204547</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL‎-00003" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1728243204547</updated>
+    </task>
+    <task id="LOCAL‎-00004" summary="Improve code and add function to automatically insert the initial user">
+      <option name="closed" value="true" />
+      <created>1728245513740</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL‎-00004" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1728245513740</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -187,11 +238,15 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Adding the services folder with the user service file&#10;Adding a route of creating a new user with the use of user_service&#10;Adjustment of the app file according to the code&#10;and other bug fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding the services folder with the user service file&#10;Adding a route of creating a new user with the use of user_service&#10;Adjustment of the app file according to the code&#10;and other bug fixes" />
+    <MESSAGE value="Refactored the database connection code into a separate file and added a test_user.py file with tests for creating a new user." />
+    <MESSAGE value="Added routes for user-related functionality in the application." />
+    <MESSAGE value="Improve code and add function to automatically insert the initial user" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve code and add function to automatically insert the initial user" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/national_asset$.coverage" NAME=" Coverage Results" MODIFIED="1728242402783" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
-    <SUITE FILE_PATH="coverage/national_asset$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1728242392455" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/national_asset$.coverage" NAME=" Coverage Results" MODIFIED="1728242956550" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/national_asset$create_db.coverage" NAME="create_db Coverage Results" MODIFIED="1728284337226" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/db" />
+    <SUITE FILE_PATH="coverage/national_asset$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1728289705095" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/national_asset$national_asset.coverage" NAME="national-asset Coverage Results" MODIFIED="1728213728557" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

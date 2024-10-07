@@ -208,8 +208,40 @@ def insert_initial_user():
     except Exception as e:
         print(f"Error inserting initial user: {e}")
 
+# Function to check if the tables exist
+def check_if_db_initialized():
+    try:
+        # Connect to the database
+        conn = psycopg2.connect(
+            dbname=config['DB_NAME'],
+            user=config['DB_USER'],
+            password=config['DB_PASSWORD'],
+            host=config['DB_HOST'],
+            port=config['DB_PORT']
+        )
+        cursor = conn.cursor()
+
+        # Check if the Users table exists
+        cursor.execute("""
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE table_name = 'users'
+            );
+        """)
+        table_exists = cursor.fetchone()[0]
+
+        cursor.close()
+        conn.close()
+
+        return table_exists
+    except Exception as e:
+        print(f"Error checking if DB is initialized: {e}")
+        return False
+
 # Main execution
 if __name__ == '__main__':
-    create_database()  # Create the database if it doesn't exist
-    create_tables()    # Create all tables in the database
-    insert_initial_user()  # Insert the initial user
+    # Only create the database and tables if they do not exist (first run)
+    if not check_if_db_initialized():
+        create_database()
+        create_tables()
+        insert_initial_user()

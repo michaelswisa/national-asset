@@ -1,27 +1,24 @@
-from flask import Flask, Blueprint, jsonify, request
-from db.db import db
-from models.users import User
+from flask import Blueprint, jsonify, request
 from services import users_service
 
 bp_users = Blueprint('users', __name__)
-
 
 @bp_users.route('', methods=['POST'])
 def create_user():
     try:
         data = request.get_json()
 
-        # קריאה לשירות יצירת משתמש
+        # Call the service to create a user
         user = users_service.create_user(data)
 
-        # במידה והכל תקין, מחזירים תגובה חיובית
+        # If everything is fine, return a positive response
         return jsonify({"message": "User created successfully", 'user': user.to_dict()}), 201
 
     except ValueError as e:
-        # טיפול בשגיאות שמגיעות מהשירות, כמו שם משתמש שכבר קיים או נתונים חסרים
+        # Handle errors coming from the service, such as existing username or missing data
         return jsonify({"error": str(e)}), 400
 
     except Exception as e:
-        print("Error", str(e))
-        # טיפול בשגיאות לא צפויות אחרות
+        print("Error:", str(e))
+        # Handle any unexpected errors
         return jsonify({"error": "An unexpected error occurred"}), 500

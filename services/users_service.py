@@ -1,4 +1,4 @@
-from db.db import db
+from db.db import db_alchemy as db
 from models.users import User
 
 
