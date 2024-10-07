@@ -15,7 +15,7 @@ class User(db.Model):
 
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.LargeBinary, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     role = db.Column(db.Enum(UserRole), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)

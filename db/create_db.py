@@ -1,6 +1,7 @@
 import psycopg2
 from psycopg2 import sql
 from config.config import load_config  # Importing the load_config function
+from services.hashing_pessword import save_password
 
 # Create ENUM types in PostgreSQL
 create_role_enum = """
@@ -16,7 +17,7 @@ create_users_table = """
 CREATE TABLE Users (
     user_id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
+    password BYTEA NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     role user_role NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -195,8 +196,9 @@ def insert_initial_user():
         INSERT INTO Users (username, password, email, role)
         VALUES (%s, %s, %s, %s);
         """
+        password_hashed = save_password("password123")
         # Initial user details
-        initial_user_data = ("admin", "password123", "admin@example.com", "manager")
+        initial_user_data = ("admin", password_hashed, "admin@example.com", "manager")
 
         # Execute the insert query
         cursor.execute(insert_query, initial_user_data)

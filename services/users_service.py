@@ -1,8 +1,9 @@
 from db.db import db_alchemy as db
 from models.users import User
-
-
 from sqlalchemy.exc import IntegrityError, DataError
+from services.hashing_pessword import save_password
+from utils.utils import is_valid_email
+
 
 def create_user(data):
     user_name = data.get('username')
@@ -13,9 +14,15 @@ def create_user(data):
     if not user_name or not password or not email or not role:
         raise ValueError("Missing required fields")
 
+    # בדיקת תקינות האימייל
+    if not is_valid_email(email):
+        raise ValueError("Invalid email format")
+
     try:
+        password_hashed = save_password(password)
+
         # יצירת אובייקט משתמש חדש
-        new_user = User(username=user_name, password=password, email=email, role=role)
+        new_user = User(username=user_name, password=password_hashed, email=email, role=role)
         db.session.add(new_user)
         db.session.commit()
         return new_user

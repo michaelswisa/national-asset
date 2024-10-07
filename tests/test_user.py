@@ -54,3 +54,14 @@ def test_create_user_invalid_role(client):
     response = client.post('/users', json=data)
     assert response.status_code == 400
     assert 'Invalid value for the role' in response.json['error']
+
+def test_create_user_invalid_email(client):
+    data = {
+        'username': 'testuser',
+        'password': 'testpass',
+        'email': 'invalid_email_format',
+        'role': 'soldier'
+    }
+    response = client.post('/users', json=data)
+    assert response.status_code == 400
+    assert 'Invalid email format' in response.json['error']
