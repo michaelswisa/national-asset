@@ -2,7 +2,7 @@ import psycopg2
 from psycopg2 import pool
 from flask_sqlalchemy import SQLAlchemy
 from config.config import load_config
-from create_db import check_if_db_initialized, create_database, create_tables, insert_initial_user
+from db.create_db import check_if_db_initialized, create_database, create_tables, insert_initial_user
 
 # Load the configuration
 config = load_config()
