@@ -18,6 +18,10 @@ def create_user(data):
     if not is_valid_email(email):
         raise ValueError("Invalid email format")
 
+    # בדיקת סוג הסיסמה בתוך הפונקציה שמטפלת ביצירת המשתמש
+    if not isinstance(password, str):
+        raise ValueError("Invalid data type for password")
+
     try:
         password_hashed = save_password(password)
 

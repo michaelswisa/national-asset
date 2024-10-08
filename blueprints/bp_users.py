@@ -1,9 +1,12 @@
 from flask import Blueprint, jsonify, request
+from middleware.token_middleware import token_required, role_required
 from services import users_service
 
 bp_users = Blueprint('users', __name__)
 
 @bp_users.route('', methods=['POST'])
+@token_required
+@role_required(['commander', 'manager'])
 def create_user():
     try:
         data = request.get_json()

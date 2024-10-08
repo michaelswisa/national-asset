@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import request, jsonify
+from flask import request, jsonify, g
 from services.token_service import decode_token
 
 def token_required(f):
@@ -21,8 +21,12 @@ def token_required(f):
         user_id = decoded_data['user_id']
         user_role = decoded_data['role']
 
+        # שמירת המידע ב-g
+        g.user_id = decoded_data['user_id']
+        g.user_role = decoded_data['role']
+
         # המשך לפונקציה המקורית עם פרטי המשתמש
-        return f(user_id=user_id, user_role=user_role, *args, **kwargs)
+        return f(*args, **kwargs)
 
     return decorated
 
@@ -31,7 +35,7 @@ def role_required(allowed_roles):
     def wrapper(f):
         @wraps(f)
         def decorated(*args, **kwargs):
-            user_role = kwargs.get('user_role')
+            user_role = g.get('user_role')
 
             if user_role not in allowed_roles:
                 return jsonify({'message': 'Access forbidden: insufficient permissions'}), 403
