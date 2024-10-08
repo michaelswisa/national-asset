@@ -1,7 +1,7 @@
 import pytest
 import jwt
 from datetime import datetime, timedelta
-from flask import Flask, jsonify
+from flask import Flask, jsonify, g
 from middleware.token_middleware import token_required, role_required
 from config.config import get_secret_key
 
@@ -15,13 +15,19 @@ def client():
     @app.route('/commander-only', methods=['GET'])
     @token_required
     @role_required(['commander', 'manager'])
-    def commander_only_route(user_id, user_role):
+    def commander_only_route():
+        user_id = g.user_id
+        user_role = g.user_role
+
         return jsonify({'message': f'Welcome commander or manager {user_id}'}), 200
 
     @app.route('/manager-only', methods=['GET'])
     @token_required
     @role_required(['manager'])
-    def manager_only_route(user_id, user_role):
+    def manager_only_route():
+        user_id = g.user_id
+        user_role = g.user_role
+
         return jsonify({'message': f'Welcome manager {user_id}'}), 200
 
     with app.test_client() as client:
