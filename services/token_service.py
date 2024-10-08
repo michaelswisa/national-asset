@@ -6,7 +6,6 @@ SECRET_KEY = get_secret_key()
 
 def create_token(user_id, user_role):
     """יוצר טוקן JWT עבור המשתמש."""
-    # שימוש ב- datetime.now() בשילוב עם timezone
     expiration_time = datetime.now() + timedelta(hours=1)  # טוקן בתוקף לשעה
     token = jwt.encode({
         'user_id': user_id,
@@ -15,12 +14,15 @@ def create_token(user_id, user_role):
     }, SECRET_KEY, algorithm='HS256')
     return token
 
+
 def decode_token(token):
-    """מפרק טוקן JWT ומחזיר את פרטי המשתמש."""
+    """פענוח טוקן JWT ובדיקה אם הוא בתוקף"""
     try:
-        data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-        return data
+        decoded_data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        if datetime.now().timestamp() > decoded_data['exp']:
+            return None, 'Token expired'
+        return decoded_data, None
     except jwt.ExpiredSignatureError:
-        return None  # הטוקן פג תוקף
+        return None, 'Token expired'
     except jwt.InvalidTokenError:
-        return None  # טוקן לא חוקי
+        return None, 'Invalid token'
